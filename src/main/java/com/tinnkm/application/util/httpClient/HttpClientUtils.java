@@ -12,6 +12,8 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -24,6 +26,7 @@ import java.util.Map;
 
 @Component
 public class HttpClientUtils {
+    private final Logger log = LoggerFactory.getLogger(HttpClientUtils.class);
     @Autowired
     private CloseableHttpClient httpClient;
     /**
@@ -35,6 +38,7 @@ public class HttpClientUtils {
      * @throws IOException
      */
     public String doGet(String url) throws ClientProtocolException, IOException {
+        log.info("start do get request,url:{}",url);
         // 创建http GET请求
         HttpGet httpGet = new HttpGet(url);
         CloseableHttpResponse response = null;
