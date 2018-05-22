@@ -3,24 +3,29 @@ package com.tinnkm.application.util.wechat;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.tinnkm.application.model.AccessToken;
-import com.tinnkm.application.model.MenuGroup;
+import com.tinnkm.application.model.User;
+import com.tinnkm.application.util.wechat.model.AccessToken;
 import com.tinnkm.application.util.encode.EncodeUtils;
 import com.tinnkm.application.util.httpClient.HttpClientUtils;
 import com.tinnkm.application.util.json.JsonUtils;
+import com.tinnkm.application.util.wechat.model.Menu;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 @Component
@@ -34,6 +39,54 @@ public class WeChatUtils {
     private AccessToken accessToken;
     private ConcurrentLinkedQueue queue = new ConcurrentLinkedQueue<AccessToken>();
 
+    /**
+     * 获取用户openId
+     *
+     * @param detail 是否获取相信信息，如果为否，则只能获取openid
+     *               并且根据这个openid无法获取用户信息
+     * @retu     */
+    public Map getAuth(boolean detail, String redirect, String redirectParams) throws IOException, URISyntaxException {
+        log.info("start to get openid,detail is {}", detail);
+        HashMap<String, String> params = new HashMap<>();
+        params.put("appid", weChatProperties.getAppId());
+        params.put("redirect_uri", URLEncoder.encode(redirect, "utf-8"));
+        params.put("response_type", "code");
+        if (detail) {
+            params.put("scope", "snsapi_userinfo");
+        } else {
+            params.put("scope", "snsapi_base");
+        }
+        // 由于必须加上#wechat_redirect所以在需要传递的参数上加入这个标识，
+        // 所以在处理的时候需要去掉
+        if (StringUtils.isEmpty(redirectParams)){
+            redirectParams = "state"+"#wechat_redirect";
+        }
+        params.put("state",redirectParams+"#wechat_redirect");
+
+        // todo:这一步得再前台去做
+        String resp = httpClientUtils.doGet("https://open.weixin.qq.com/connect/oauth2/authorize", params);
+        String code = JsonUtils.getFieldValue(resp, "code");
+        params.clear();
+        params.put("appid",weChatProperties.getAppId());
+        params.put("secret",weChatProperties.getAppSecret());
+        params.put("code",code);
+        params.put("grant_type","authorization_code");
+        String resps = httpClientUtils.doGet("https://api.weixin.qq.com/sns/oauth2/access_token", params);
+        params.clear();
+        params.put("openid",JsonUtils.getFieldValue(resps,"openid"));
+        // 这个access_token与我们系统中的不是一个，只做获取用户信息使用
+        params.put("accessToken",JsonUtils.getFieldValue(resps,"access_token"));
+        return params;
+
+    }
+
+    /**
+     * 获取用户详细信息(此接口暂时用不到不处理)
+     * @return
+     */
+    public Map getUserInfo(){
+        return null;
+    }
 
     /**
      * 验证请求是来自于微信端
@@ -56,6 +109,8 @@ public class WeChatUtils {
         log.info("this digest is {},this source is {}", digests, signature);
         return signature.equalsIgnoreCase(digests);
     }
+
+    //region token
 
     /**
      * 除setAccessToken外禁止手动调用此方法
@@ -98,17 +153,15 @@ public class WeChatUtils {
         }
         return this.accessToken.getAccessToken();
     }
+    //endregion
 
-    public boolean createMenu(MenuGroup menuGroup) throws IOException{
-        String json = JsonUtils.object2json(menuGroup);
+    public boolean createMenu(Menu menu) throws IOException {
+        String json = JsonUtils.object2json(menu);
         log.info("create menu，params：" + json);
-        HashMap<String, String> params = new HashMap<>();
         log.info("token is {}", accessToken());
-        params.put("access_token", accessToken());
-        params.put("body", json);
-        String resp = httpClientUtils.doPost(weChatProperties.getApiUrl() + "/menu/create", params);
+        String resp = httpClientUtils.doPostJson(weChatProperties.getApiUrl() + "/menu/create?access_token=" + accessToken(), json);
         String errcode = JsonUtils.getFieldValue(resp, "errcode");
-        if ("0".equalsIgnoreCase(errcode)){
+        if ("0".equalsIgnoreCase(errcode)) {
             return true;
         }
         return false;

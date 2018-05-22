@@ -1,4 +1,4 @@
-package com.tinnkm.application.model;
+package com.tinnkm.application.util.wechat.model;
 
 public class AccessToken {
     private String accessToken;

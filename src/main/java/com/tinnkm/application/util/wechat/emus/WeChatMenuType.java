@@ -1,4 +1,4 @@
-package com.tinnkm.application.enums;
+package com.tinnkm.application.util.wechat.emus;
 
 /**
  * 1、click：点击推事件用户点击click类型按钮后，微信服务器会通过消息接口推送消息类型为event的结构给开发者（参考消息接口指南），并且带上按钮中开发者填写的key值，开发者可以通过自定义的key值与用户进行交互；
@@ -13,7 +13,7 @@ package com.tinnkm.application.enums;
  * 10、view_limited：跳转图文消息URL用户点击view_limited类型按钮后，微信客户端将打开开发者在按钮中填写的永久素材id对应的图文消息URL，永久素材类型只支持图文消息。请注意：永久素材id必须是在“素材管理/新增永久素材”接口上传后获得的合法id。
  * 请注意，3到8的所有事件，仅支持微信iPhone5.4.1以上版本，和Android5.4以上版本的微信用户，旧版本微信用户点击后将没有回应，开发者也不能正常接收到事件推送。9和10，是专门给第三方平台旗下未微信认证（具体而言，是资质认证未通过）的订阅号准备的事件类型，它们是没有事件推送的，能力相对受限，其他类型的公众号不必使用。
  */
-public enum  WeChatMuneType {
+public enum WeChatMenuType {
     CLICK("click"),
     VIEW("view"),
     SCANCODE_PUSH("scancode_push"),
@@ -32,7 +32,7 @@ public enum  WeChatMuneType {
     public String getValue(){
         return value;
     }
-    WeChatMuneType(String value) {
+    WeChatMenuType(String value) {
         this.value = value;
     }
 }
