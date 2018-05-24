@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
@@ -16,18 +18,12 @@ import java.net.URISyntaxException;
 public class ApplicationController {
     @Autowired
     private AuthService authService;
-    @GetMapping("/index")
-    public String index() throws IOException, URISyntaxException {
-        boolean auth = authService.getAuth("www.baidu.com", "1");
-        if (auth){
-            return "index";
-        }
-        return "failed";
-    }
+
 
     @GetMapping("/createApproval")
-    public Result<Approval> init(){
+    public Result<Approval> init(@SessionAttribute("code") String code,@SessionAttribute("state") String state) throws IOException, URISyntaxException {
+        Approval approval = authService.getAuth(code, state);
         // 获取流程
-        return Result.success();
+        return Result.success(approval);
     }
 }

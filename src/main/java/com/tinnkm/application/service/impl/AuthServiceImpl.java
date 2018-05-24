@@ -19,8 +19,8 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     private ApprovalDao approvalDao;
     @Override
-    public boolean getAuth(String redirectUri, String state) throws IOException, URISyntaxException {
-        Map auth = weChatUtils.getAuth(false, redirectUri, state);
+    public Approval getAuth(String code, String state) throws IOException, URISyntaxException {
+        Map auth = weChatUtils.getAuth(code);
         String openId = auth.get("openid").toString();
         Approval byOpenId = approvalDao.findByOpenId(openId);
         if (null == byOpenId){
@@ -30,7 +30,8 @@ public class AuthServiceImpl implements AuthService {
             // 表示初始创建
             approval.setStatus(0);
             approvalDao.saveAndFlush(approval);
+            return approval;
         }
-        return true;
+        return byOpenId;
     }
 }

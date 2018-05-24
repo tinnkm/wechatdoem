@@ -42,31 +42,10 @@ public class WeChatUtils {
     /**
      * 获取用户openId
      *
-     * @param detail 是否获取相信信息，如果为否，则只能获取openid
-     *               并且根据这个openid无法获取用户信息
-     * @retu     */
-    public Map getAuth(boolean detail, String redirect, String redirectParams) throws IOException, URISyntaxException {
-        log.info("start to get openid,detail is {}", detail);
-        HashMap<String, String> params = new HashMap<>();
-        params.put("appid", weChatProperties.getAppId());
-        params.put("redirect_uri", URLEncoder.encode(redirect, "utf-8"));
-        params.put("response_type", "code");
-        if (detail) {
-            params.put("scope", "snsapi_userinfo");
-        } else {
-            params.put("scope", "snsapi_base");
-        }
-        // 由于必须加上#wechat_redirect所以在需要传递的参数上加入这个标识，
-        // 所以在处理的时候需要去掉
-        if (StringUtils.isEmpty(redirectParams)){
-            redirectParams = "state"+"#wechat_redirect";
-        }
-        params.put("state",redirectParams+"#wechat_redirect");
 
-        // todo:这一步得再前台去做
-        String resp = httpClientUtils.doGet("https://open.weixin.qq.com/connect/oauth2/authorize", params);
-        String code = JsonUtils.getFieldValue(resp, "code");
-        params.clear();
+     * @retu     */
+    public Map getAuth(String code) throws IOException, URISyntaxException {
+        HashMap<String, String> params = new HashMap<>();
         params.put("appid",weChatProperties.getAppId());
         params.put("secret",weChatProperties.getAppSecret());
         params.put("code",code);
@@ -77,7 +56,6 @@ public class WeChatUtils {
         // 这个access_token与我们系统中的不是一个，只做获取用户信息使用
         params.put("accessToken",JsonUtils.getFieldValue(resps,"access_token"));
         return params;
-
     }
 
     /**
