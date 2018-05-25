@@ -22,12 +22,14 @@ public class Result<T> {
         Result instance = getInstance();
         instance.setCode(ResultCode.Success);
         instance.setMessage(msg);
+        instance.setData(null);
         return instance;
     }
     public static Result success(){
         Result instance = getInstance();
         instance.setCode(ResultCode.Success);
         instance.setMessage("success");
+        instance.setData(null);
         return instance;
     }
     public static <T> Result success(String msg,T data){
@@ -49,12 +51,14 @@ public class Result<T> {
         Result instance = getInstance();
         instance.setCode(ResultCode.Failed);
         instance.setMessage(msg);
+        instance.setData(null);
         return instance;
     }
     public static Result failed(){
         Result instance = getInstance();
         instance.setCode(ResultCode.Failed);
         instance.setMessage("failed");
+        instance.setData(null);
         return instance;
     }
     public static <T> Result failed(String msg,T data){
@@ -75,12 +79,14 @@ public class Result<T> {
         Result instance = getInstance();
         instance.setCode(ResultCode.Error);
         instance.setMessage(msg);
+        instance.setData(null);
         return instance;
     }
     public static Result error(){
         Result instance = getInstance();
         instance.setCode(ResultCode.Error);
         instance.setMessage("error");
+        instance.setData(null);
         return instance;
     }
     public static <T> Result error(String msg,T data){
@@ -101,6 +107,7 @@ public class Result<T> {
         Result instance = getInstance();
         instance.setCode(ResultCode.Error);
         instance.setMessage(throwable.getLocalizedMessage());
+        instance.setData(null);
         return instance;
     }
     public ResultCode getCode() {

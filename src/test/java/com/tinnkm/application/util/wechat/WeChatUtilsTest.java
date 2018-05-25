@@ -23,7 +23,7 @@ public class WeChatUtilsTest extends ApplicationTests {
     @Test
     public void createMune() throws IOException {
         ViewButton viewButton = new ViewButton();
-        viewButton.setUrl("http://rv2vrw.natappfree.cc/auth");
+        viewButton.setUrl("http://cedj34.natappfree.cc/auth");
         viewButton.setName("测试授权");
         com.tinnkm.application.util.wechat.model.Menu menu = new com.tinnkm.application.util.wechat.model.Menu(viewButton);
 

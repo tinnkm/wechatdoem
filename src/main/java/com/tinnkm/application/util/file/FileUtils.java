@@ -28,7 +28,7 @@ public class FileUtils {
             log.info("upload done!");
             return Result.success();
         } catch (IOException e) {
-            log.error("the upload error!because {}", suffix);
+            log.error("the upload error!because {}", e.getMessage());
             return Result.error(e);
         }
 

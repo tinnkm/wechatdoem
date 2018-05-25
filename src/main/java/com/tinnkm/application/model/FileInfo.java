@@ -15,10 +15,11 @@ public class FileInfo {
     @Id
     private UUID fileId;
     // 业务id
-    private UUID bizId;
+    private String bizId;
     // 文件存放的相对路径
     private String relativePath;
     private FileType fileType;
+    private String fileName;
     //region getter/setter
     public UUID getFileId() {
         return fileId;
@@ -28,11 +29,11 @@ public class FileInfo {
         this.fileId = fileId;
     }
 
-    public UUID getBizId() {
+    public String getBizId() {
         return bizId;
     }
 
-    public void setBizId(UUID bizId) {
+    public void setBizId(String bizId) {
         this.bizId = bizId;
     }
 
@@ -50,6 +51,14 @@ public class FileInfo {
 
     public void setFileType(FileType fileType) {
         this.fileType = fileType;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
     //endregion
 }
