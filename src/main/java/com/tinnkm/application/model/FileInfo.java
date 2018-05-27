@@ -13,7 +13,7 @@ import java.util.UUID;
 @Entity
 public class FileInfo {
     @Id
-    private UUID fileId;
+    private String fileId;
     // 业务id
     private String bizId;
     // 文件存放的相对路径
@@ -21,11 +21,11 @@ public class FileInfo {
     private FileType fileType;
     private String fileName;
     //region getter/setter
-    public UUID getFileId() {
+    public String getFileId() {
         return fileId;
     }
 
-    public void setFileId(UUID fileId) {
+    public void setFileId(String fileId) {
         this.fileId = fileId;
     }
 

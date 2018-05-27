@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.util.UUID;
 
@@ -26,9 +27,13 @@ public class FileController {
     public Result<String> upload(String bizId, @PathVariable("fileType") FileType fileType, MultipartFile file) {
         return fileService.upload(bizId, fileType, file);
     }
+    @GetMapping("/download/{fileId}")
+    public void download(@PathVariable("fileId") String fileId, HttpServletResponse response) {
+        fileService.download(fileId, response);
+    }
 
     @DeleteMapping("/delete/{id}")
-    public Result delete(@PathVariable("id") UUID fileId) {
+    public Result delete(@PathVariable("id") String fileId) {
         return fileService.delete(fileId);
     }
 }

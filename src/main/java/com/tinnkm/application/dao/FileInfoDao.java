@@ -11,16 +11,16 @@ import java.util.List;
 import java.util.UUID;
 
 
-public interface FileInfoDao extends BaseRepository <FileInfo,UUID>{
+public interface FileInfoDao extends BaseRepository <FileInfo,String>{
     @Modifying
     @Transactional
     FileInfo saveAndFlush(FileInfo fileInfo);
     @Modifying
     @Transactional
     int updateSelective(FileInfo fileInfo);
-    List<FileInfo> findByBizId(UUID bizId);
-    FileInfo findByBizIdAndFileType(UUID bizId,  FileType fileType);
+    List<FileInfo> findByBizId(String bizId);
+    FileInfo findByBizIdAndFileType(String bizId,  FileType fileType);
     @Modifying
     @Transactional
-    int deleteByFileId(UUID fileId);
+    int deleteByFileId(String fileId);
 }

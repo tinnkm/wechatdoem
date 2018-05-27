@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.util.UUID;
 
@@ -23,11 +24,11 @@ public class FileServiceImpl implements FileService {
     private FileInfoDao fileInfoDao;
     @Override
     public Result upload(String bizId, FileType fileType, MultipartFile file) {
-        Result upload = FileUtils.upload(basePath + File.separator + bizId + File.separator + fileType, file);
+        Result upload = FileUtils.upload(basePath + File.separator + bizId + File.separator + fileType+ File.separator, file);
         if (upload.getCode() == ResultCode.Success){
             UUID id = UUID.randomUUID();
             FileInfo fileInfo = new FileInfo();
-            fileInfo.setFileId(id);
+            fileInfo.setFileId(id.toString());
             fileInfo.setBizId(bizId);
             fileInfo.setFileType(fileType);
             fileInfo.setFileName(file.getOriginalFilename());
@@ -45,15 +46,24 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public Result delete(UUID fileId) {
+    public Result delete(String fileId) {
         FileInfo file = fileInfoDao.findById(fileId).get();
-        File saveFile = new File(basePath + file.getRelativePath() + file.getFileName());
+        if (null == file){
+            return Result.failed("传入信息有误！");
+        }
+        File saveFile = new File(basePath + file.getRelativePath() +File.separator+ file.getFileName());
         if (saveFile.exists()){
             saveFile.delete();
         }else{
             return Result.failed("文件不存在");
         }
         // 删除路径下的文件
-        return fileInfoDao.deleteByFileId(fileId) > 1 ? Result.success() : Result.failed();
+        return fileInfoDao.deleteByFileId(fileId) > 0 ? Result.success() : Result.failed();
+    }
+
+    @Override
+    public void download(String fileId, HttpServletResponse response) {
+        FileInfo file = fileInfoDao.findById(fileId).get();
+        FileUtils.download(basePath+file.getRelativePath(),file.getFileName(),response);
     }
 }

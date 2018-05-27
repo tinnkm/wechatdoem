@@ -21,7 +21,7 @@ public class FileUtils {
         log.info("the suffix is {}", suffix);
         File dest = new File(path + originalFilename);
         if (!dest.getParentFile().exists()) {
-            dest.getParentFile().mkdir();
+            dest.getParentFile().mkdirs();
         }
         try {
             file.transferTo(dest);
@@ -35,7 +35,7 @@ public class FileUtils {
     }
 
     public static void download(String path, String fileName, HttpServletResponse response) {
-        File file = new File(path + File.pathSeparator + fileName);
+        File file = new File(path + File.separator + fileName);
         if (file.exists()) {
             response.setContentType("application/force-download");
             response.setHeader("Content-Disposition", "attachment;fileName=" + fileName);
@@ -52,6 +52,8 @@ public class FileUtils {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }else{
+            log.info("the file not exists");
         }
     }
 }
