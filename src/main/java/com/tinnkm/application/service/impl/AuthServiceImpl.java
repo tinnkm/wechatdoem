@@ -10,13 +10,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * @author tinnkm
+ */
 @Service
 public class AuthServiceImpl implements AuthService {
+    private static final String APPROVAL_PREFIX = "WX";
     @Autowired
     private WeChatUtils weChatUtils;
     @Autowired
@@ -48,6 +53,6 @@ public class AuthServiceImpl implements AuthService {
     }
 
     private synchronized String getBizId(){
-        return "WX"+new Date().getTime();
+        return APPROVAL_PREFIX+Instant.now();
     }
 }

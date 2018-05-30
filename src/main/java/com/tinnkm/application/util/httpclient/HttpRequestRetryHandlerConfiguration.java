@@ -1,4 +1,4 @@
-package com.tinnkm.application.util.httpClient;
+package com.tinnkm.application.util.httpclient;
 
 import org.apache.http.*;
 import org.apache.http.client.HttpRequestRetryHandler;
@@ -10,7 +10,6 @@ import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicHeaderElementIterator;
 import org.apache.http.protocol.HTTP;
-import org.apache.http.protocol.HttpContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -18,16 +17,22 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.net.ssl.SSLException;
-import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.net.UnknownHostException;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * @author tinnkm
+ */
 @Configuration
 @EnableConfigurationProperties(HttpClientProperties.class)
 public class HttpRequestRetryHandlerConfiguration {
+    public final HttpClientProperties httpClientProperties;
+
     @Autowired
-    public HttpClientProperties httpClientProperties;
+    public HttpRequestRetryHandlerConfiguration(HttpClientProperties httpClientProperties) {
+        this.httpClientProperties = httpClientProperties;
+    }
 
     /**
      * 连接重试

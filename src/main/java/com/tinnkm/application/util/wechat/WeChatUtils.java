@@ -3,10 +3,9 @@ package com.tinnkm.application.util.wechat;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.tinnkm.application.model.User;
 import com.tinnkm.application.util.wechat.model.AccessToken;
 import com.tinnkm.application.util.encode.EncodeUtils;
-import com.tinnkm.application.util.httpClient.HttpClientUtils;
+import com.tinnkm.application.util.httpclient.HttpClientUtils;
 import com.tinnkm.application.util.json.JsonUtils;
 import com.tinnkm.application.util.wechat.model.Menu;
 import org.slf4j.Logger;
@@ -15,12 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
-import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Date;
@@ -28,24 +24,33 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+/**
+ * @author tinnkm
+ */
 @Component
 @EnableConfigurationProperties(WeChatProperties.class)
 public class WeChatUtils {
     private static Logger log = LoggerFactory.getLogger(WeChatUtils.class);
-    @Autowired
-    private WeChatProperties weChatProperties;
-    @Autowired
-    private HttpClientUtils httpClientUtils;
+    private final WeChatProperties weChatProperties;
+    private final HttpClientUtils httpClientUtils;
     private AccessToken accessToken;
     private ConcurrentLinkedQueue queue = new ConcurrentLinkedQueue<AccessToken>();
 
-    /**
-     * 获取用户openId
-     *
+    @Autowired
+    public WeChatUtils(WeChatProperties weChatProperties, HttpClientUtils httpClientUtils) {
+        this.weChatProperties = weChatProperties;
+        this.httpClientUtils = httpClientUtils;
+    }
 
-     * @retu     */
+    /**
+     * 获取用户openid
+     * @param code 返回的code
+     * @return 用户id 和 accesstoken
+     * @throws IOException
+     * @throws URISyntaxException
+     */
     public Map getAuth(String code) throws IOException, URISyntaxException {
-        HashMap<String, String> params = new HashMap<>();
+        HashMap<String, String> params = new HashMap<>(10);
         params.put("appid",weChatProperties.getAppId());
         params.put("secret",weChatProperties.getAppSecret());
         params.put("code",code);
@@ -83,7 +88,7 @@ public class WeChatUtils {
         Arrays.stream(strings).forEach(string -> {
             stringBuffer.append(string);
         });
-        String digests = EncodeUtils.SHA1(stringBuffer.toString());
+        String digests = EncodeUtils.sha1(stringBuffer.toString());
         log.info("this digest is {},this source is {}", digests, signature);
         return signature.equalsIgnoreCase(digests);
     }
@@ -96,9 +101,9 @@ public class WeChatUtils {
      * @throws IOException
      * @throws URISyntaxException
      */
-    public String AutoRefreshAccessToken() throws IOException, URISyntaxException {
+    public String autoRefreshAccessToken() throws IOException, URISyntaxException {
         log.info("get accessToken,time:{}", new Date());
-        HashMap<String, String> params = new HashMap<>();
+        HashMap<String, String> params = new HashMap<>(10);
         params.put("grant_type", "client_credential");
         params.put("appid", weChatProperties.getAppId());
         params.put("secret", weChatProperties.getAppSecret());
@@ -120,7 +125,7 @@ public class WeChatUtils {
     public void setAccessToken() throws IOException, URISyntaxException {
         log.info("Refresh accessToken,time:{},and save it to cache", new Date());
         Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
-        queue.add(gson.fromJson(AutoRefreshAccessToken(), AccessToken.class));
+        queue.add(gson.fromJson(autoRefreshAccessToken(), AccessToken.class));
         log.info("-------------done------------");
     }
 

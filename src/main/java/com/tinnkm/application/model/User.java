@@ -5,28 +5,30 @@ import javax.persistence.Id;
 import java.util.UUID;
 
 /**
- * 用户表，对接微信
+ * 用户表
+ * @author tinnkm
  */
 @Entity
 public class User {
-    // 如果是微信用户openid自己获取，如果是后台用户系统生成
     @Id
-    private UUID id;
+    private String id;
     private String name;
     private String nickname;
     private Integer phone;
     private String password;
-    // 标识用户来源
+    /**
+     * 标识用户来源
+     */
     private int fromWhere;
 
     //region getter/setter
 
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 

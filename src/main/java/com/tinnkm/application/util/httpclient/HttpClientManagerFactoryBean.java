@@ -1,4 +1,4 @@
-package com.tinnkm.application.util.httpClient;
+package com.tinnkm.application.util.httpclient;
 
 import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.client.config.RequestConfig;
@@ -13,23 +13,34 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * @author tinnkm
+ */
 @Service("HttpClient")
 public class HttpClientManagerFactoryBean implements FactoryBean<CloseableHttpClient>,InitializingBean,DisposableBean {
     /**
      * FactoryBean生成的目标对象
      */
     private CloseableHttpClient client;
+    private final ConnectionKeepAliveStrategy connectionKeepAliveStrategy;
+    private final HttpRequestRetryHandler httpRequestRetryHandler;
+    private final DefaultProxyRoutePlanner proxyRoutePlanner;
+    private final PoolingHttpClientConnectionManager poolingHttpClientConnectionManager;
+    private final RequestConfig config;
+
     @Autowired
-    private ConnectionKeepAliveStrategy connectionKeepAliveStrategy;
-    @Autowired
-    private HttpRequestRetryHandler httpRequestRetryHandler;
-    @Autowired(required = false)
-    private DefaultProxyRoutePlanner proxyRoutePlanner;
-    @Autowired
-    private PoolingHttpClientConnectionManager poolingHttpClientConnectionManager;
-    @Autowired
-    private RequestConfig config;
-    // 销毁上下文的时候销毁httpclient实例
+    public HttpClientManagerFactoryBean(ConnectionKeepAliveStrategy connectionKeepAliveStrategy, HttpRequestRetryHandler httpRequestRetryHandler, DefaultProxyRoutePlanner proxyRoutePlanner, PoolingHttpClientConnectionManager poolingHttpClientConnectionManager, RequestConfig config) {
+        this.connectionKeepAliveStrategy = connectionKeepAliveStrategy;
+        this.httpRequestRetryHandler = httpRequestRetryHandler;
+        this.proxyRoutePlanner = proxyRoutePlanner;
+        this.poolingHttpClientConnectionManager = poolingHttpClientConnectionManager;
+        this.config = config;
+    }
+
+    /**
+     * 销毁上下文的时候销毁httpclient实例
+     * @throws Exception
+     */
     @Override
     public void destroy() throws Exception {
         /*
@@ -44,7 +55,7 @@ public class HttpClientManagerFactoryBean implements FactoryBean<CloseableHttpCl
     }
 
     @Override
-    public CloseableHttpClient getObject() throws Exception {
+    public CloseableHttpClient getObject() {
         return this.client;
     }
 
@@ -54,7 +65,7 @@ public class HttpClientManagerFactoryBean implements FactoryBean<CloseableHttpCl
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet(){
         this.client = HttpClients.custom().setConnectionManager(poolingHttpClientConnectionManager)
                 .setRetryHandler(httpRequestRetryHandler)
                 .setKeepAliveStrategy(connectionKeepAliveStrategy)

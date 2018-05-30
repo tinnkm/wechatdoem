@@ -1,28 +1,49 @@
-package com.tinnkm.application.util.httpClient;
+package com.tinnkm.application.util.httpclient;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+/**
+ * @author tinnkm
+ */
 @ConfigurationProperties(prefix = "spring.httpclient")
 public class HttpClientProperties {
-    // 重试次数
+    /**
+     *  重试次数
+     */
     private int retryTime = 3;
-    // 最大连接数
+    /**
+     * 最大连接数
+     */
     private int connMaxTotal = 20;
     private int maxPerRoute = 20;
-    //连接存活时间（s）
+    /**
+     * 连接存活时间（s）
+     */
     private int timeToLive = 60;
-    // 保持连接时间（s）
+    /**
+     * 保持连接时间（s）
+     */
     private int keepAliveTime = 30;
-    // 代理
+    /**
+     * 代理
+     */
     private boolean proxyEnable = false;
     private String proxyHost;
     private int proxyPort = 8080;
-    // 连接超时时间
+    /**
+     * 连接超时时间
+     */
     private int connectTimeout = 2000;
-    // 从连接池中获取连接超时时间
+    /**
+     * 从连接池中获取连接超时时间
+     */
     private int connectRequestTimeout = 2000;
-    // 请求超时时间
+    /**
+     * 请求超时时间
+     */
     private int socketTimeout = 2000;
+
+    //region getter/setter
 
     public int getConnMaxTotal() {
         return connMaxTotal;
@@ -111,4 +132,5 @@ public class HttpClientProperties {
     public void setSocketTimeout(int socketTimeout) {
         this.socketTimeout = socketTimeout;
     }
+    //endregion
 }

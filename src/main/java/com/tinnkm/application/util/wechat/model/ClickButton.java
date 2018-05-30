@@ -4,9 +4,11 @@ import com.tinnkm.application.util.wechat.emus.WeChatMenuType;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
-public class ClickButton extends Button {
+/**
+ * @author tinnkm
+ */
+public class ClickButton extends AbstractButton {
     @Max(128)
     @NotNull
     private String key;

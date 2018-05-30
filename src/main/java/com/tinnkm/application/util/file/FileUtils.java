@@ -8,9 +8,18 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 
+/**
+ * @author tinnkm
+ */
 public class FileUtils {
     private static final Logger log = LoggerFactory.getLogger(FileUtils.class);
 
+    /**
+     * 文件上传
+     * @param path 上传路径
+     * @param file 文件
+     * @return 上传结果
+     */
     public static Result upload(String path, MultipartFile file) {
         if (file.isEmpty()) {
             return Result.failed("文件为空");
@@ -34,6 +43,12 @@ public class FileUtils {
 
     }
 
+    /**
+     * 文件下载
+     * @param path 文件路径
+     * @param fileName 文件名
+     * @param response 返回对象
+     */
     public static void download(String path, String fileName, HttpServletResponse response) {
         File file = new File(path + File.separator + fileName);
         if (file.exists()) {
@@ -47,8 +62,6 @@ public class FileUtils {
                     i = bis.read(bytes);
                 }
                 log.info("download complete");
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }

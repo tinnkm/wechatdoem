@@ -1,4 +1,4 @@
-package com.tinnkm.application.util.httpClient;
+package com.tinnkm.application.util.httpclient;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -24,21 +24,31 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author tinnkm
+ */
 @Component
 public class HttpClientUtils {
     private final Logger log = LoggerFactory.getLogger(HttpClientUtils.class);
+    private final CloseableHttpClient httpClient;
+    private final String ENCODE = "UTF-8";
+
     @Autowired
-    private CloseableHttpClient httpClient;
+    public HttpClientUtils(CloseableHttpClient httpClient) {
+        this.httpClient = httpClient;
+    }
+
     /**
      * 无参get请求
+     *
+     * @param url 请求链接
+     * @return 结果字符串
+     * @throws ClientProtocolException 链接协议异常
+     * @throws IOException             io异常
      * @autho tinnkm
-     * @param url
-     * @return
-     * @throws ClientProtocolException
-     * @throws IOException
      */
     public String doGet(String url) throws ClientProtocolException, IOException {
-        log.info("start do get request,url:{}",url);
+        log.info("start do get request,url:{}", url);
         // 创建http GET请求
         HttpGet httpGet = new HttpGet(url);
         CloseableHttpResponse response = null;
@@ -60,16 +70,17 @@ public class HttpClientUtils {
 
     /**
      * 有参get请求
-     * @param url
-     * @return
-     * @throws URISyntaxException
-     * @throws IOException
-     * @throws ClientProtocolException
+     *
+     * @param url 请求路径
+     * @return 结果字符串
+     * @throws URISyntaxException      uri地址异常
+     * @throws IOException             io异常
+     * @throws ClientProtocolException 链接异常
      */
-    public String doGet(String url , Map<String, String> params) throws URISyntaxException, ClientProtocolException, IOException{
+    public String doGet(String url, Map<String, String> params) throws URISyntaxException, ClientProtocolException, IOException {
         URIBuilder uriBuilder = new URIBuilder(url);
-        if(params != null){
-            for(String key : params.keySet()){
+        if (params != null) {
+            for (String key : params.keySet()) {
                 uriBuilder.setParameter(key, params.get(key));
             }
         }
@@ -78,20 +89,21 @@ public class HttpClientUtils {
 
     /**
      * 有参post请求
-     * @autho tinnkm
-     * @param url
-     * @param params
-     * @return
-     * @throws ClientProtocolException
-     * @throws IOException
+     *
+     * @param url    请求路径
+     * @param params 参数
+     * @return 返回结果
+     * @throws ClientProtocolException 链接异常
+     * @throws IOException             io异常
+     * @author tinnkm
      */
-    public String doPost(String url , Map<String, String> params) throws ClientProtocolException, IOException{
+    public String doPost(String url, Map<String, String> params) throws ClientProtocolException, IOException {
         // 创建http POST请求
         HttpPost httpPost = new HttpPost(url);
-        if(params != null){
+        if (params != null) {
             // 设置2个post参数，一个是scope、一个是q
             List<NameValuePair> parameters = new ArrayList<NameValuePair>(0);
-            for(String key : params.keySet()){
+            for (String key : params.keySet()) {
                 parameters.add(new BasicNameValuePair(key, params.get(key)));
             }
             // 构造一个form表单式的实体
@@ -105,31 +117,32 @@ public class HttpClientUtils {
             response = this.httpClient.execute(httpPost);
             // 判断返回状态是否为200
             if (response.getStatusLine().getStatusCode() == 200) {
-                return  EntityUtils.toString(response.getEntity(), "UTF-8");
+                return EntityUtils.toString(response.getEntity(), ENCODE);
+
             }
         } finally {
             if (response != null) {
                 response.close();
             }
-            //httpclient.close();
         }
         return null;
     }
 
     /**
      * 有参post请求,json交互
-     * @autho tinnkm
-     * @time 2017年5月8日 下午3:33:01
-     * @param url
-     * @param json
-     * @return
+     *
+     * @param url 请求链接
+     * @param json json串
+     * @return 解析结果
      * @throws ClientProtocolException
      * @throws IOException
+     * @author trrinnkm
+     * @date 2017年5月8日 下午3:33:01
      */
-    public String doPostJson(String url , String json) throws ClientProtocolException, IOException{
+    public String doPostJson(String url, String json) throws ClientProtocolException, IOException {
         // 创建http POST请求
         HttpPost httpPost = new HttpPost(url);
-        if(!StringUtils.isEmpty(json)){
+        if (!StringUtils.isEmpty(json)) {
             //标识出传递的参数是 application/json
             StringEntity stringEntity = new StringEntity(json, ContentType.APPLICATION_JSON);
             httpPost.setEntity(stringEntity);
@@ -153,14 +166,16 @@ public class HttpClientUtils {
 
     /**
      * 无参post请求
-     * @autho tinnkm
-     * @time 2017年5月8日 下午3:33:27
+     *
      * @param url
      * @return
      * @throws ClientProtocolException
      * @throws IOException
+     * @author tinnkm
+     * @date 2017年5月8日 下午3:33:27
      */
-    public String doPost(String url) throws ClientProtocolException, IOException{
+    public String doPost(String url) throws ClientProtocolException, IOException {
         return this.doPost(url, null);
     }
+
 }

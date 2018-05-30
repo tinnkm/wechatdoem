@@ -3,24 +3,27 @@ package com.tinnkm.application.util.wechat.model;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * @author tinnkm
+ */
 public class Menu {
-    private List<Button> button;
+    private List<AbstractButton> button;
 
-    public Menu(List<Button> button) {
+    public Menu(List<AbstractButton> button) {
         this.button = button;
     }
-    public Menu(Button ...button) {
+    public Menu(AbstractButton ...button) {
         this.button = Arrays.asList(button);
     }
 
     public Menu() {
     }
 
-    public List<Button> getButton() {
+    public List<AbstractButton> getButton() {
         return button;
     }
 
-    public void setButton(List<Button> button) {
+    public void setButton(List<AbstractButton> button) {
         this.button = button;
     }
 }

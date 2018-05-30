@@ -3,6 +3,9 @@ package com.tinnkm.application.util.wechat;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author tinnkm
+ */
 @Component
 @ConfigurationProperties(prefix = "spring.wechat")
 public class WeChatProperties {

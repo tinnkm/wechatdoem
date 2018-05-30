@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * @author tinnkm
+ */
 @RestController
 public class SignatureController {
     @Autowired
@@ -15,9 +18,9 @@ public class SignatureController {
     /**
      * 配置接口的时候会认证
      * @param signature
-     * @param timestamp
+     * @param timestamp 时间戳
      * @param nonce
-     * @param echostr
+     * @param echostr 随机字符串
      * @return
      * @throws NoSuchAlgorithmException
      */

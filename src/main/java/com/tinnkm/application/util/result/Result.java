@@ -2,6 +2,7 @@ package com.tinnkm.application.util.result;
 
 /**
  * 返回结果封装
+ * @author tinnkm
  * @param <T>
  */
 public class Result<T> {
@@ -12,11 +13,11 @@ public class Result<T> {
     private Result(){
 
     }
-    public static final Result getInstance(){
+    public static Result getInstance(){
         return Singleton.RESULT;
     }
     private static class Singleton{
-        public static final Result RESULT = new Result();
+        static final Result RESULT = new Result();
     }
     public static Result success(String msg){
         Result instance = getInstance();

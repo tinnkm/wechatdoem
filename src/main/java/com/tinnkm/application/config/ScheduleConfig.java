@@ -8,6 +8,7 @@ import java.util.concurrent.Executors;
 
 /**
  * 为scheduleconfig添加线程池，来防止多任务情况下的任务延迟（因为默认schedule是单线程跑）
+ * @author tinnkm
  */
 @Configuration
 public class ScheduleConfig implements SchedulingConfigurer {

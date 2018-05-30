@@ -9,13 +9,15 @@ import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * @author tinnkm
+ */
 @Service
 public class SignatureServiceImpl implements SignatureService {
-    private static Logger log = LoggerFactory.getLogger(SignatureServiceImpl.class);
     @Autowired
     private WeChatUtils weChatUtils;
     @Override
-    public boolean checkSignature(String signature, String timestamp, String nonce) throws NoSuchAlgorithmException {
+    public boolean checkSignature(String signature, String timestamp, String nonce) {
         return weChatUtils.checkSignature(signature, timestamp, nonce);
     }
 }

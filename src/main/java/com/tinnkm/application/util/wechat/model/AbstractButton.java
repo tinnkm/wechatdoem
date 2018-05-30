@@ -3,11 +3,14 @@ package com.tinnkm.application.util.wechat.model;
 import javax.validation.constraints.Max;
 import java.util.List;
 
-public abstract class Button {
+/**
+ * @author tinnkm
+ */
+public abstract class AbstractButton {
     @Max(16)
     protected String name;
     protected String type;
-    private List<Button> subButton;
+    private List<AbstractButton> subButton;
     public String getName() {
         return name;
     }
@@ -24,11 +27,11 @@ public abstract class Button {
         this.type = type;
     }
 
-    public List<Button> getSubButton() {
+    public List<AbstractButton> getSubButton() {
         return subButton;
     }
 
-    public void setSubButton(List<Button> subButton) {
+    public void setSubButton(List<AbstractButton> subButton) {
         this.subButton = subButton;
     }
 }

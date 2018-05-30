@@ -5,6 +5,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 
+/**
+ * @author tinnkm
+ */
 @Configuration
 @EnableJpaRepositories(basePackages = "**.dao",repositoryFactoryBeanClass = BaseRepositoryFactoryBean.class)
 @EnableSpringDataWebSupport

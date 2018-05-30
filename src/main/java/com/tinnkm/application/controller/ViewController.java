@@ -1,25 +1,25 @@
 package com.tinnkm.application.controller;
 
-import com.tinnkm.application.service.AuthService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
+/**
+ * @author tinnkm
+ */
 @Controller
-public class viewContriller {
+public class ViewController {
 
     @GetMapping("/auth")
-    public String auth() throws IOException, URISyntaxException {
+    public String auth() {
         return "auth";
     }
     @RequestMapping("/index")
-    public String index(String code, String state, HttpSession session) throws IOException, URISyntaxException {
+    public String index(String code, String state, HttpSession session) {
         // 授权回调之后生成对应信息
         session.setAttribute("code",code);
         session.setAttribute("state",state);

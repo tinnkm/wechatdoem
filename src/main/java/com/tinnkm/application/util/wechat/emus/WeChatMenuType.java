@@ -12,18 +12,52 @@ package com.tinnkm.application.util.wechat.emus;
  * 9、media_id：下发消息（除文本消息）用户点击media_id类型按钮后，微信服务器会将开发者填写的永久素材id对应的素材下发给用户，永久素材类型可以是图片、音频、视频、图文消息。请注意：永久素材id必须是在“素材管理/新增永久素材”接口上传后获得的合法id。
  * 10、view_limited：跳转图文消息URL用户点击view_limited类型按钮后，微信客户端将打开开发者在按钮中填写的永久素材id对应的图文消息URL，永久素材类型只支持图文消息。请注意：永久素材id必须是在“素材管理/新增永久素材”接口上传后获得的合法id。
  * 请注意，3到8的所有事件，仅支持微信iPhone5.4.1以上版本，和Android5.4以上版本的微信用户，旧版本微信用户点击后将没有回应，开发者也不能正常接收到事件推送。9和10，是专门给第三方平台旗下未微信认证（具体而言，是资质认证未通过）的订阅号准备的事件类型，它们是没有事件推送的，能力相对受限，其他类型的公众号不必使用。
+ * @author tinnkm
  */
 public enum WeChatMenuType {
+    /**
+     * 点击类型
+     */
     CLICK("click"),
+    /**
+     * 视图类型
+     */
     VIEW("view"),
+    /**
+     * 二维码
+     */
     SCANCODE_PUSH("scancode_push"),
+    /**
+     * 扫码并接收消息
+     */
     SCANCODE_WAITMSG("scancode_waitmsg"),
+    /**
+     * 弹出拍照
+     */
     PIC_SYSPHOTO("pic_sysphoto"),
+    /**
+     * 弹出拍照或者系统相册
+     */
     PIC_PHOTO_OR_ALBUM("pic_photo_or_album"),
+    /**
+     * 弹出微信相册
+     */
     PIC_WEIXIN("pic_weixin"),
+    /**
+     * 弹出地理位置
+     */
     LOCATION_SELECT("location_select"),
+    /**
+     * 媒体id
+     */
     MEDIA_ID("media_id"),
+    /**
+     * 跳转图文消息URL用户点击view_limited类型按钮
+     */
     VIEW_LIMITED("view_limited"),
+    /**
+     * 小程序
+     */
     MINIPROGRAM("miniprogram");
 
     private String value;

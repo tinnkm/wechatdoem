@@ -13,6 +13,9 @@ import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.UUID;
 
+/**
+ * @author tinnkm
+ */
 @RestController
 @RequestMapping("/api")
 public class ApplicationController {
@@ -22,15 +25,17 @@ public class ApplicationController {
     @Autowired
     private ApprovalService approvalService;
 
-//     fixed this is for test,remember change it ro above
+    /**
+     * 初始化审批记录
+     * @param code 返回的code
+     * @param state 需要传递的参数
+     * @return 获取审批记录
+     * @throws IOException
+     * @throws URISyntaxException
+     */
     @GetMapping("/createApproval")
     public Result<Approval> init(@SessionAttribute("code") String code,@SessionAttribute(value = "state",required = false) String state) throws IOException, URISyntaxException {
         Approval approval = authService.getAuth(code, state);
-//        Approval approval = new Approval();
-//        approval.setStatus(0);
-//        approval.setBizId("WX"+new Date().getTime());
-//        approval.setOpenId("...");
-        // 获取流程
         return Result.success(approval);
     }
     @PostMapping("/updateApproval/{bizId}")

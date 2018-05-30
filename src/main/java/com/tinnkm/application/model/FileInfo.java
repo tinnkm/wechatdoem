@@ -9,18 +9,24 @@ import java.util.UUID;
 /**
  * 用户上传文件类
  * 同一bizid和openid和filetype下只允许存在一条信息
+ * @author tinnkm
  */
 @Entity
 public class FileInfo {
     @Id
     private String fileId;
-    // 业务id
+    /**
+     * 业务id
+     */
     private String bizId;
-    // 文件存放的相对路径
+    /**
+     * 文件存放的相对路径
+     */
     private String relativePath;
     private FileType fileType;
     private String fileName;
     //region getter/setter
+
     public String getFileId() {
         return fileId;
     }

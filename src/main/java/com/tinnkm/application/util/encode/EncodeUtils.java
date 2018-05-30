@@ -4,12 +4,21 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * @author tinnkm
+ */
 public class EncodeUtils {
-    public static String SHA1(String str){
-        if (null == str || 0 == str.length()){
+    /**
+     * 获取sha1加密的结果
+     *
+     * @param str 待加密字符串
+     * @return 加密后的字符串
+     */
+    public static String sha1(String str) {
+        if (null == str || 0 == str.length()) {
             return null;
         }
-        char[] hexDigits = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+        char[] hexDigits = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
                 'a', 'b', 'c', 'd', 'e', 'f'};
         try {
             MessageDigest mdTemp = MessageDigest.getInstance("SHA1");
@@ -25,14 +34,19 @@ public class EncodeUtils {
                 buf[k++] = hexDigits[byte0 & 0xf];
             }
             return new String(buf);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }
         return null;
     }
-    public static String MD5(String str) {
+
+    /**
+     * 获取md5加密的字符串
+     *
+     * @param str 带加密字符串
+     * @return 加密后的字符串
+     */
+    public static String md5(String str) {
         MessageDigest messageDigest = null;
 
         try {
@@ -49,13 +63,14 @@ public class EncodeUtils {
 
         byte[] byteArray = messageDigest.digest();
 
-        StringBuffer md5StrBuff = new StringBuffer();
+        StringBuilder md5StrBuff = new StringBuilder();
 
-        for (int i = 0; i < byteArray.length; i++) {
-            if (Integer.toHexString(0xFF & byteArray[i]).length() == 1)
-                md5StrBuff.append("0").append(Integer.toHexString(0xFF & byteArray[i]));
-            else
-                md5StrBuff.append(Integer.toHexString(0xFF & byteArray[i]));
+        for (byte aByteArray : byteArray) {
+            if (Integer.toHexString(0xFF & aByteArray).length() == 1) {
+                md5StrBuff.append("0").append(Integer.toHexString(0xFF & aByteArray));
+            } else {
+                md5StrBuff.append(Integer.toHexString(0xFF & aByteArray));
+            }
         }
 
         return md5StrBuff.toString();

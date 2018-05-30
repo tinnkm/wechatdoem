@@ -6,23 +6,37 @@ import java.util.UUID;
 
 /**
  * 同一bizid与openid只有一条信息
+ * @author tinnkm
  */
 @Entity
 public class Approval {
-    // 业务id
+    /**
+     * 业务id
+     */
     @Id
     private String bizId;
-    // 用户的openId
+    /**
+     * 用户openid，每个微信用户的openid时固定的
+     */
     private String openId;
-    // 审批状态0表示初始创建，1表示审核中，2表示审核通过，3表示审核不通过
+    /**
+     * 审批状态0表示初始创建，1表示审核中，2表示审核通过，3表示审核不通过
+     */
     private int status;
-    // 备注
+    /**
+     * 备注
+     */
     private String comment;
-    // 审核通过后的凭证
+    /**
+     * 审核通过后的凭证
+     */
     private String accessCode;
-    // 如果信息审核不通过，用户重新申请时，讲失败信息标记删除
+    /**
+     * 如果信息审核不通过，用户重新申请时，讲失败信息标记删除
+     */
     private int deleted;
     //region getter/setter
+
     public String getBizId() {
         return bizId;
     }

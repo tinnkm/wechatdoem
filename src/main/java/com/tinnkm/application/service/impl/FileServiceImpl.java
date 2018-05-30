@@ -14,8 +14,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.UUID;
 
+/**
+ * @author tinnkm
+ */
 @Service
 public class FileServiceImpl implements FileService {
     @Value("${spring.upload,basepath}")
@@ -47,7 +51,7 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public Result delete(String fileId) {
-        FileInfo file = fileInfoDao.findById(fileId).get();
+        FileInfo file = fileInfoDao.findById(fileId).orElse(null);
         if (null == file){
             return Result.failed("传入信息有误！");
         }
@@ -62,8 +66,11 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public void download(String fileId, HttpServletResponse response) {
-        FileInfo file = fileInfoDao.findById(fileId).get();
+    public void download(String fileId, HttpServletResponse response) throws FileNotFoundException {
+        FileInfo file = fileInfoDao.findById(fileId).orElse(null);
+        if (null == file){
+            throw new FileNotFoundException();
+        }
         FileUtils.download(basePath+file.getRelativePath(),file.getFileName(),response);
     }
 }
