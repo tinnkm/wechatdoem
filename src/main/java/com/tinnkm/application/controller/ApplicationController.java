@@ -38,6 +38,12 @@ public class ApplicationController {
         Approval approval = authService.getAuth(code, state);
         return Result.success(approval);
     }
+
+    /**
+     * 根据业务id更新记录
+     * @param bizId 业务id
+     * @return json串
+     */
     @PostMapping("/updateApproval/{bizId}")
     public Result update(@PathVariable("bizId") String bizId){
         return approvalService.update(bizId);

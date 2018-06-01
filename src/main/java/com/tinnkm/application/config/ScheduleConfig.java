@@ -1,10 +1,11 @@
 package com.tinnkm.application.config;
 
+import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 
-import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
  * 为scheduleconfig添加线程池，来防止多任务情况下的任务延迟（因为默认schedule是单线程跑）
@@ -14,6 +15,6 @@ import java.util.concurrent.Executors;
 public class ScheduleConfig implements SchedulingConfigurer {
     @Override
     public void configureTasks(ScheduledTaskRegistrar scheduledTaskRegistrar) {
-        scheduledTaskRegistrar.setScheduler(Executors.newScheduledThreadPool(5));
+        scheduledTaskRegistrar.setScheduler(new ScheduledThreadPoolExecutor(1,new BasicThreadFactory.Builder().namingPattern("sschedule-pool-%d").daemon(true).build()));
     }
 }
