@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+
 /**
  * @author tinnkm
  */
@@ -31,5 +33,10 @@ public class ApprovalServiceImpl implements ApprovalService {
             e.printStackTrace();
             return Result.error(e);
         }
+    }
+
+    @Override
+    public Result getApprovalList(String status, Date createTimeBegin, Date createTimeEnd, String bizId, int page, int row) {
+        return null;
     }
 }
