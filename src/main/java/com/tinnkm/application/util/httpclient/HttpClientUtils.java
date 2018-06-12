@@ -30,13 +30,10 @@ import java.util.Map;
 @Component
 public class HttpClientUtils {
     private final Logger log = LoggerFactory.getLogger(HttpClientUtils.class);
-    private final CloseableHttpClient httpClient;
+    @Autowired
+    private CloseableHttpClient httpClient;
     private final String ENCODE = "UTF-8";
 
-    @Autowired
-    public HttpClientUtils(CloseableHttpClient httpClient) {
-        this.httpClient = httpClient;
-    }
 
     /**
      * 无参get请求

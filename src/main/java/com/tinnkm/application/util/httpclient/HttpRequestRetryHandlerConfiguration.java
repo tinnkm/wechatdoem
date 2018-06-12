@@ -27,12 +27,8 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 @EnableConfigurationProperties(HttpClientProperties.class)
 public class HttpRequestRetryHandlerConfiguration {
-    public final HttpClientProperties httpClientProperties;
-
     @Autowired
-    public HttpRequestRetryHandlerConfiguration(HttpClientProperties httpClientProperties) {
-        this.httpClientProperties = httpClientProperties;
-    }
+    public HttpClientProperties httpClientProperties;
 
     /**
      * 连接重试

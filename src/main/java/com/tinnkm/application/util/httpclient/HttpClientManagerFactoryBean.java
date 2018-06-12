@@ -22,20 +22,33 @@ public class HttpClientManagerFactoryBean implements FactoryBean<CloseableHttpCl
      * FactoryBean生成的目标对象
      */
     private CloseableHttpClient client;
-    private final ConnectionKeepAliveStrategy connectionKeepAliveStrategy;
-    private final HttpRequestRetryHandler httpRequestRetryHandler;
-    private final DefaultProxyRoutePlanner proxyRoutePlanner;
-    private final PoolingHttpClientConnectionManager poolingHttpClientConnectionManager;
-    private final RequestConfig config;
+    private  ConnectionKeepAliveStrategy connectionKeepAliveStrategy;
+    private  HttpRequestRetryHandler httpRequestRetryHandler;
+    private  DefaultProxyRoutePlanner defaultProxyRoutePlanner;
+    private  PoolingHttpClientConnectionManager poolingHttpClientConnectionManager;
+    private  RequestConfig config;
+
+    public HttpClientManagerFactoryBean() {
+    }
 
     @Autowired
-    public HttpClientManagerFactoryBean(ConnectionKeepAliveStrategy connectionKeepAliveStrategy, HttpRequestRetryHandler httpRequestRetryHandler, DefaultProxyRoutePlanner proxyRoutePlanner, PoolingHttpClientConnectionManager poolingHttpClientConnectionManager, RequestConfig config) {
+    public HttpClientManagerFactoryBean(ConnectionKeepAliveStrategy connectionKeepAliveStrategy, HttpRequestRetryHandler httpRequestRetryHandler, DefaultProxyRoutePlanner defaultProxyRoutePlanner, PoolingHttpClientConnectionManager poolingHttpClientConnectionManager, RequestConfig config) {
         this.connectionKeepAliveStrategy = connectionKeepAliveStrategy;
         this.httpRequestRetryHandler = httpRequestRetryHandler;
-        this.proxyRoutePlanner = proxyRoutePlanner;
+        this.defaultProxyRoutePlanner = defaultProxyRoutePlanner;
         this.poolingHttpClientConnectionManager = poolingHttpClientConnectionManager;
         this.config = config;
     }
+
+
+//    @Autowired
+//    public HttpClientManagerFactoryBean(ConnectionKeepAliveStrategy connectionKeepAliveStrategy, HttpRequestRetryHandler httpRequestRetryHandler, DefaultProxyRoutePlanner proxyRoutePlanner, PoolingHttpClientConnectionManager poolingHttpClientConnectionManager, RequestConfig config) {
+//        this.connectionKeepAliveStrategy = connectionKeepAliveStrategy;
+//        this.httpRequestRetryHandler = httpRequestRetryHandler;
+//        this.proxyRoutePlanner = proxyRoutePlanner;
+//        this.poolingHttpClientConnectionManager = poolingHttpClientConnectionManager;
+//        this.config = config;
+//    }
 
     /**
      * 销毁上下文的时候销毁httpclient实例
@@ -69,7 +82,7 @@ public class HttpClientManagerFactoryBean implements FactoryBean<CloseableHttpCl
         this.client = HttpClients.custom().setConnectionManager(poolingHttpClientConnectionManager)
                 .setRetryHandler(httpRequestRetryHandler)
                 .setKeepAliveStrategy(connectionKeepAliveStrategy)
-                .setRoutePlanner(proxyRoutePlanner)
+                .setRoutePlanner(defaultProxyRoutePlanner)
                 .setDefaultRequestConfig(config)
                 .build();
     }

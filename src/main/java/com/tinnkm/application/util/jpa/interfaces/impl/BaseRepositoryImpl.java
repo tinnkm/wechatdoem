@@ -1,6 +1,9 @@
 package com.tinnkm.application.util.jpa.interfaces.impl;
 
+import com.tinnkm.application.util.jpa.ext.DynamicConditionAbstract;
 import com.tinnkm.application.util.jpa.interfaces.BaseRepository;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
 import javax.persistence.EntityManager;
@@ -14,7 +17,7 @@ import java.util.stream.Collectors;
 /**
  * @author tinnkm
  */
-public class BaseRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRepository<T, ID> implements BaseRepository<T, ID> {
+public class BaseRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRepository<T, ID> implements BaseRepository<T, ID>,JpaSpecificationExecutor<T> {
     private final EntityManager em;
 
     public BaseRepositoryImpl(Class<T> domainClass, EntityManager em) {
@@ -57,5 +60,12 @@ public class BaseRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRep
         }
 
         return 0;
+    }
+
+    @Override
+    public Slice<T> findSelective(DynamicConditionAbstract dynamicCondition) {
+        // 获取所有字段
+        Field[] declaredFields = dynamicCondition.getClass().getDeclaredFields();
+        return null;
     }
 }
