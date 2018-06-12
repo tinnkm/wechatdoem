@@ -2,6 +2,7 @@ package com.tinnkm.application.service.impl;
 
 import com.tinnkm.application.dao.ApprovalDao;
 import com.tinnkm.application.model.Approval;
+import com.tinnkm.application.model.ApprovalParams;
 import com.tinnkm.application.service.ApprovalService;
 import com.tinnkm.application.util.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,8 @@ public class ApprovalServiceImpl implements ApprovalService {
     }
 
     @Override
-    public Result getApprovalList(String status, Date createTimeBegin, Date createTimeEnd, String bizId, int page, int row) {
+    public Result getApprovalList(ApprovalParams approvalParams) {
+        approvalDao.findSelective(approvalParams);
         return null;
     }
 }

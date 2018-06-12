@@ -1,5 +1,6 @@
 package com.tinnkm.application.service;
 
+import com.tinnkm.application.model.ApprovalParams;
 import com.tinnkm.application.util.result.Result;
 
 import java.util.Date;
@@ -16,14 +17,9 @@ public interface ApprovalService {
     Result update(String bizId);
 
     /**
-     * 获取approval记录
-     * @param status 审批状态
-     * @param createTimeBegin 创建时间开始
-     * @param createTimeEnd 创建时间结束
-     * @param bizId 业务id
-     * @param page 页数
-     * @param row 行数
-     * @return 分页后的结果
+     * 获取审批列表
+     * @param approvalParams 审核参数
+     * @return table数据
      */
-    Result getApprovalList(String status, Date createTimeBegin,Date createTimeEnd,String bizId,int page,int row);
+    Result getApprovalList(ApprovalParams approvalParams);
 }
