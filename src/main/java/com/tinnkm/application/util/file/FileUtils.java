@@ -14,8 +14,13 @@ import java.io.*;
 public class FileUtils {
     private static final Logger log = LoggerFactory.getLogger(FileUtils.class);
 
+    private FileUtils() {
+        throw new IllegalStateException("Utility class");
+    }
+
     /**
      * 文件上传
+     *
      * @param path 上传路径
      * @param file 文件
      * @return 上传结果
@@ -26,7 +31,7 @@ public class FileUtils {
         }
         String originalFilename = file.getOriginalFilename();
         log.info("the file name is {}", originalFilename);
-        String suffix = originalFilename.substring(originalFilename.lastIndexOf("."));
+        String suffix = originalFilename.substring(originalFilename.lastIndexOf('.'));
         log.info("the suffix is {}", suffix);
         File dest = new File(path + originalFilename);
         if (!dest.getParentFile().exists()) {
@@ -45,7 +50,8 @@ public class FileUtils {
 
     /**
      * 文件下载
-     * @param path 文件路径
+     *
+     * @param path     文件路径
      * @param fileName 文件名
      * @param response 返回对象
      */
@@ -57,15 +63,15 @@ public class FileUtils {
             byte[] bytes = new byte[1024];
             try (FileInputStream fis = new FileInputStream(file); BufferedInputStream bis = new BufferedInputStream(fis); OutputStream os = response.getOutputStream()) {
                 int i = bis.read(bytes);
-                while (i != -1){
+                while (i != -1) {
                     os.write(bytes);
                     i = bis.read(bytes);
                 }
                 log.info("download complete");
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error(e.getLocalizedMessage());
             }
-        }else{
+        } else {
             log.info("the file not exists");
         }
     }

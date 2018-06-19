@@ -4,11 +4,9 @@ import com.tinnkm.application.enums.FileType;
 import com.tinnkm.application.model.FileInfo;
 import com.tinnkm.application.util.jpa.interfaces.BaseRepository;
 import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.UUID;
 
 
 /**

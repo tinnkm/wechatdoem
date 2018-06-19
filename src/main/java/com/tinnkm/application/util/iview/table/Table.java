@@ -50,4 +50,12 @@ public class Table<T> {
     public void setData(T data) {
         this.data = data;
     }
+
+    public List<TableColumn> getColumns() {
+        return columns;
+    }
+
+    public void setColumns(List<TableColumn> columns) {
+        this.columns = columns;
+    }
 }

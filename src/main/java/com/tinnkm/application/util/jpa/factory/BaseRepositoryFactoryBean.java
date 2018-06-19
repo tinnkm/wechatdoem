@@ -26,15 +26,15 @@ public class BaseRepositoryFactoryBean<R extends JpaRepository<T,I>,T,I extends 
         return new BaseRepositoryFactory(entityManager);
     }
 
-    private static class BaseRepositoryFactory<T,I extends Serializable> extends JpaRepositoryFactory{
+    private static class BaseRepositoryFactory extends JpaRepositoryFactory{
         public BaseRepositoryFactory(EntityManager entityManager) {
             super(entityManager);
         }
 
 
         @Override
-        protected <T, ID extends Serializable> SimpleJpaRepository<?, ?> getTargetRepository(RepositoryInformation information, EntityManager entityManager) {
-            return new BaseRepositoryImpl<T,ID>((Class<T>) information.getDomainType(), entityManager);
+        protected  SimpleJpaRepository<?, ?> getTargetRepository(RepositoryInformation information, EntityManager entityManager) {
+            return new BaseRepositoryImpl<>((Class<?>) information.getDomainType(), entityManager);
         }
 
         @Override

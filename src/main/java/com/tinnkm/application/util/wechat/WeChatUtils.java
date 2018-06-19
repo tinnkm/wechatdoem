@@ -3,10 +3,10 @@ package com.tinnkm.application.util.wechat;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.tinnkm.application.util.wechat.model.AccessToken;
 import com.tinnkm.application.util.encode.EncodeUtils;
 import com.tinnkm.application.util.httpclient.HttpClientUtils;
 import com.tinnkm.application.util.json.JsonUtils;
+import com.tinnkm.application.util.wechat.model.AccessToken;
 import com.tinnkm.application.util.wechat.model.Menu;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,10 +84,8 @@ public class WeChatUtils {
         log.info("start checkSignature,signature:{},timestamp:{},nonce:{}", signature, timestamp, nonce);
         String[] strings = {weChatProperties.getToken(), timestamp, nonce};
         Arrays.sort(strings);
-        StringBuffer stringBuffer = new StringBuffer();
-        Arrays.stream(strings).forEach(string -> {
-            stringBuffer.append(string);
-        });
+        StringBuilder stringBuffer = new StringBuilder();
+        Arrays.stream(strings).forEach(stringBuffer::append);
         String digests = EncodeUtils.sha1(stringBuffer.toString());
         log.info("this digest is {},this source is {}", digests, signature);
         return signature.equalsIgnoreCase(digests);
@@ -107,7 +105,6 @@ public class WeChatUtils {
         params.put("grant_type", "client_credential");
         params.put("appid", weChatProperties.getAppId());
         params.put("secret", weChatProperties.getAppSecret());
-        String resp = null;
         return httpClientUtils.doGet(weChatProperties.getApiUrl() + "/token", params);
     }
 
@@ -134,20 +131,18 @@ public class WeChatUtils {
             AccessToken take = (AccessToken) queue.poll();
             this.accessToken = take;
         }
-        return this.accessToken.getAccessToken();
+        return this.accessToken.getToken();
     }
     //endregion
 
     public boolean createMenu(Menu menu) throws IOException {
         String json = JsonUtils.object2json(menu);
-        log.info("create menu，params：" + json);
-        log.info("token is {}", accessToken());
-        String resp = httpClientUtils.doPostJson(weChatProperties.getApiUrl() + "/menu/create?access_token=" + accessToken(), json);
+        String token = accessToken();
+        log.info("create menu，params：{}" , json);
+        log.info("token is {}", token);
+        String resp = httpClientUtils.doPostJson(weChatProperties.getApiUrl() + "/menu/create?access_token=" + token, json);
         String errcode = JsonUtils.getFieldValue(resp, "errcode");
-        if ("0".equalsIgnoreCase(errcode)) {
-            return true;
-        }
-        return false;
+        return "0".equalsIgnoreCase(errcode);
     }
 
 }

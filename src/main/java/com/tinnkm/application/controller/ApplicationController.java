@@ -7,11 +7,8 @@ import com.tinnkm.application.util.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.Date;
-import java.util.UUID;
 
 /**
  * @author tinnkm

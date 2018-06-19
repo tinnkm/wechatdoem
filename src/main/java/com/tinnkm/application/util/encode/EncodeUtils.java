@@ -1,5 +1,8 @@
 package com.tinnkm.application.util.encode;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -8,6 +11,12 @@ import java.security.NoSuchAlgorithmException;
  * @author tinnkm
  */
 public class EncodeUtils {
+    private static final Logger LOGGER = LoggerFactory.getLogger(EncodeUtils.class);
+
+    private EncodeUtils() {
+        throw new IllegalStateException("Utility class");
+    }
+
     /**
      * 获取sha1加密的结果
      *
@@ -28,14 +37,13 @@ public class EncodeUtils {
             int j = md.length;
             char[] buf = new char[j * 2];
             int k = 0;
-            for (int i = 0; i < j; i++) {
-                byte byte0 = md[i];
+            for (byte byte0 : md) {
                 buf[k++] = hexDigits[byte0 >>> 4 & 0xf];
                 buf[k++] = hexDigits[byte0 & 0xf];
             }
             return new String(buf);
         } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getLocalizedMessage());
         }
         return null;
     }
@@ -56,11 +64,15 @@ public class EncodeUtils {
 
             messageDigest.update(str.getBytes("UTF-8"));
         } catch (NoSuchAlgorithmException e) {
-            System.out.println("NoSuchAlgorithmException caught!");
+            LOGGER.error("NoSuchAlgorithmException caught!");
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getLocalizedMessage());
         }
 
+        if (null == messageDigest) {
+            LOGGER.info("get messageDigest filed!");
+            return null;
+        }
         byte[] byteArray = messageDigest.digest();
 
         StringBuilder md5StrBuff = new StringBuilder();

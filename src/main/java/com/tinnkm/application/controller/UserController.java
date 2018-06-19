@@ -42,7 +42,7 @@ public class UserController {
     @PostMapping("/login")
     public Result<String> login(String username, String password, HttpSession httpSession) {
         Result result = userService.login(username, password);
-        if (result.getCode().equals(ResultCode.Success)) {
+        if (result.getCode().equals(ResultCode.SUCCESS)) {
             httpSession.setAttribute("username", username);
 
         }

@@ -1,7 +1,5 @@
 package com.tinnkm.application.util.wechat.model;
 
-import com.tinnkm.application.util.wechat.emus.WeChatMenuType;
-
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 
@@ -13,12 +11,7 @@ public class ViewButton extends AbstractButton {
     @NotNull
     private String url;
 
-    public ViewButton() {
-        super.setType(WeChatMenuType.VIEW.getValue());
-    }
-
     public ViewButton(@Max(1024) @NotNull String url) {
-        this();
         this.url = url;
     }
 

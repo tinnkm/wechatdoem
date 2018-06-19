@@ -1,7 +1,5 @@
 package com.tinnkm.application.util.wechat.model;
 
-import com.tinnkm.application.util.wechat.emus.WeChatMenuType;
-
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 
@@ -17,13 +15,9 @@ public class MiniProgramButton extends AbstractButton {
     @NotNull
     private String pagepath;
 
-    public MiniProgramButton() {
-        super.setType(WeChatMenuType.MINIPROGRAM.getValue());
-    }
 
 
     public MiniProgramButton(@Max(1024) @NotNull String url, @NotNull String appid, @NotNull String pagepath) {
-        this();
         this.url = url;
         this.appid = appid;
         this.pagepath = pagepath;

@@ -65,10 +65,7 @@ public class HttpRequestRetryHandlerConfiguration {
             }
             HttpClientContext clientContext = HttpClientContext.adapt(httpContext);
             HttpRequest request = clientContext.getRequest();
-            if (!(request instanceof HttpEntityEnclosingRequest)) {
-                return true;
-            }
-            return false;
+            return !(request instanceof HttpEntityEnclosingRequest);
         };
     }
 

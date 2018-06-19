@@ -7,6 +7,8 @@ import com.tinnkm.application.service.FileService;
 import com.tinnkm.application.util.file.FileUtils;
 import com.tinnkm.application.util.result.Result;
 import com.tinnkm.application.util.result.ResultCode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.UUID;
 
 /**
@@ -22,6 +27,7 @@ import java.util.UUID;
  */
 @Service
 public class FileServiceImpl implements FileService {
+    private final Logger logger = LoggerFactory.getLogger(FileServiceImpl.class);
     @Value("${spring.upload,basepath}")
     private String basePath;
     @Autowired
@@ -29,7 +35,7 @@ public class FileServiceImpl implements FileService {
     @Override
     public Result upload(String bizId, FileType fileType, MultipartFile file) {
         Result upload = FileUtils.upload(basePath + File.separator + bizId + File.separator + fileType+ File.separator, file);
-        if (upload.getCode() == ResultCode.Success){
+        if (upload.getCode() == ResultCode.SUCCESS){
             UUID id = UUID.randomUUID();
             FileInfo fileInfo = new FileInfo();
             fileInfo.setFileId(id.toString());
@@ -41,7 +47,7 @@ public class FileServiceImpl implements FileService {
                 fileInfoDao.saveAndFlush(fileInfo);
                 return Result.success("上传成功",id);
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error(e.getLocalizedMessage());
                 return Result.error(e);
             }
         }else{
@@ -55,10 +61,9 @@ public class FileServiceImpl implements FileService {
         if (null == file){
             return Result.failed("传入信息有误！");
         }
-        File saveFile = new File(basePath + file.getRelativePath() +File.separator+ file.getFileName());
-        if (saveFile.exists()){
-            saveFile.delete();
-        }else{
+        try {
+            Files.delete(Paths.get(basePath + file.getRelativePath() +File.separator+ file.getFileName()));
+        } catch (IOException e) {
             return Result.failed("文件不存在");
         }
         // 删除路径下的文件

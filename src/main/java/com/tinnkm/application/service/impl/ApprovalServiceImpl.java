@@ -5,17 +5,20 @@ import com.tinnkm.application.model.Approval;
 import com.tinnkm.application.model.ApprovalParams;
 import com.tinnkm.application.service.ApprovalService;
 import com.tinnkm.application.util.result.Result;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 
 /**
  * @author tinnkm
  */
 @Service
 public class ApprovalServiceImpl implements ApprovalService {
+    private final Logger log = LoggerFactory.getLogger(ApprovalServiceImpl.class);
     @Autowired
     private ApprovalDao approvalDao;
     @Transactional(rollbackFor = Exception.class)
@@ -31,14 +34,14 @@ public class ApprovalServiceImpl implements ApprovalService {
             int i = approvalDao.updateSelective(approval);
             return i > 0 ? Result.success() : Result.failed();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getLocalizedMessage());
             return Result.error(e);
         }
     }
 
     @Override
-    public Result getApprovalList(ApprovalParams approvalParams) {
-        approvalDao.findSelective(approvalParams);
+    public Result getApprovalList(ApprovalParams approvalParams, Pageable pageable) {
+        approvalDao.findSelective(approvalParams,pageable);
         return null;
     }
 }

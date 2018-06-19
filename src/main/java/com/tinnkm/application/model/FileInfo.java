@@ -4,7 +4,6 @@ import com.tinnkm.application.enums.FileType;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.util.UUID;
 
 /**
  * 用户上传文件类

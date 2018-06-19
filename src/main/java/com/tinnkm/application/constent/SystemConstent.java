@@ -8,5 +8,8 @@ package com.tinnkm.application.constent;
  * @date 2018/5/31 14:16
  **/
 public class SystemConstent {
+    private SystemConstent() {
+        throw new IllegalStateException("Utility class");
+    }
     public static final String SALT = "tinnkm";
 }

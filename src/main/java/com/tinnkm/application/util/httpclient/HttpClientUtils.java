@@ -32,7 +32,7 @@ public class HttpClientUtils {
     private final Logger log = LoggerFactory.getLogger(HttpClientUtils.class);
     @Autowired
     private CloseableHttpClient httpClient;
-    private final String ENCODE = "UTF-8";
+    private static final String ENCODE = "UTF-8";
 
 
     /**
@@ -44,7 +44,7 @@ public class HttpClientUtils {
      * @throws IOException             io异常
      * @autho tinnkm
      */
-    public String doGet(String url) throws ClientProtocolException, IOException {
+    public String doGet(String url) throws  IOException {
         log.info("start do get request,url:{}", url);
         // 创建http GET请求
         HttpGet httpGet = new HttpGet(url);
@@ -54,8 +54,7 @@ public class HttpClientUtils {
             response = this.httpClient.execute(httpGet);
             // 判断返回状态是否为200
             if (response.getStatusLine().getStatusCode() == 200) {
-                String content = EntityUtils.toString(response.getEntity(), "UTF-8");
-                return content;
+                return EntityUtils.toString(response.getEntity(), ENCODE);
             }
         } finally {
             if (response != null) {
@@ -72,14 +71,11 @@ public class HttpClientUtils {
      * @return 结果字符串
      * @throws URISyntaxException      uri地址异常
      * @throws IOException             io异常
-     * @throws ClientProtocolException 链接异常
      */
-    public String doGet(String url, Map<String, String> params) throws URISyntaxException, ClientProtocolException, IOException {
+    public String doGet(String url, Map<String, String> params) throws URISyntaxException, IOException {
         URIBuilder uriBuilder = new URIBuilder(url);
         if (params != null) {
-            for (String key : params.keySet()) {
-                uriBuilder.setParameter(key, params.get(key));
-            }
+            params.entrySet().forEach(entry -> uriBuilder.setParameter(entry.getKey(),entry.getValue()));
         }
         return this.doGet(uriBuilder.build().toString());
     }
@@ -90,19 +86,16 @@ public class HttpClientUtils {
      * @param url    请求路径
      * @param params 参数
      * @return 返回结果
-     * @throws ClientProtocolException 链接异常
      * @throws IOException             io异常
      * @author tinnkm
      */
-    public String doPost(String url, Map<String, String> params) throws ClientProtocolException, IOException {
+    public String doPost(String url, Map<String, String> params) throws  IOException {
         // 创建http POST请求
         HttpPost httpPost = new HttpPost(url);
         if (params != null) {
             // 设置2个post参数，一个是scope、一个是q
-            List<NameValuePair> parameters = new ArrayList<NameValuePair>(0);
-            for (String key : params.keySet()) {
-                parameters.add(new BasicNameValuePair(key, params.get(key)));
-            }
+            List<NameValuePair> parameters = new ArrayList<>(0);
+            params.entrySet().forEach(entry -> parameters.add(new BasicNameValuePair(entry.getKey(),entry.getValue())));
             // 构造一个form表单式的实体
             UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(parameters);
             // 将请求实体设置到httpPost对象中
@@ -131,12 +124,11 @@ public class HttpClientUtils {
      * @param url 请求链接
      * @param json json串
      * @return 解析结果
-     * @throws ClientProtocolException
      * @throws IOException
      * @author trrinnkm
      * @date 2017年5月8日 下午3:33:01
      */
-    public String doPostJson(String url, String json) throws ClientProtocolException, IOException {
+    public String doPostJson(String url, String json) throws  IOException {
         // 创建http POST请求
         HttpPost httpPost = new HttpPost(url);
         if (!StringUtils.isEmpty(json)) {
@@ -150,7 +142,7 @@ public class HttpClientUtils {
             response = this.httpClient.execute(httpPost);
             // 判断返回状态是否为200
             if (response.getStatusLine().getStatusCode() == 200) {
-                return EntityUtils.toString(response.getEntity(), "UTF-8");
+                return EntityUtils.toString(response.getEntity(), ENCODE);
 
             }
         } finally {
@@ -166,12 +158,11 @@ public class HttpClientUtils {
      *
      * @param url
      * @return
-     * @throws ClientProtocolException
      * @throws IOException
      * @author tinnkm
      * @date 2017年5月8日 下午3:33:27
      */
-    public String doPost(String url) throws ClientProtocolException, IOException {
+    public String doPost(String url) throws  IOException {
         return this.doPost(url, null);
     }
 

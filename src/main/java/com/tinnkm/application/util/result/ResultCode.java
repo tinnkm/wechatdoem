@@ -8,15 +8,15 @@ public enum  ResultCode {
     /**
      * 成功
      */
-    Success(1),
+    SUCCESS(1),
     /**
      * 失败
      */
-    Failed(0),
+    FAILED(0),
     /**
      * 错误
      */
-    Error(-1);
+    ERROR(-1);
 
     private int value;
 

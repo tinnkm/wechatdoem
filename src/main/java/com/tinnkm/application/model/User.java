@@ -2,7 +2,6 @@ package com.tinnkm.application.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.util.UUID;
 
 /**
  * 用户表

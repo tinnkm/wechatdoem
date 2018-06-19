@@ -19,15 +19,15 @@ public class ApprovalParams extends DynamicConditionAbstract {
     /**
      * 创建时间开始
      */
-    private Date createTimeBegin;
+    private Date createTimeAfter;
     /**
      * 创建时间结束
      */
-    private Date createTimeEnd;
+    private Date createTimeBefore;
     /**
      * 业务id
      */
-    private String bizId;
+    private String bizIdLike;
     /**
      * 页面
      */
@@ -45,28 +45,28 @@ public class ApprovalParams extends DynamicConditionAbstract {
         this.status = status;
     }
 
-    public Date getCreateTimeBegin() {
-        return createTimeBegin;
+    public Date getCreateTimeAfter() {
+        return createTimeAfter;
     }
 
-    public void setCreateTimeBegin(Date createTimeBegin) {
-        this.createTimeBegin = createTimeBegin;
+    public void setCreateTimeAfter(Date createTimeAfter) {
+        this.createTimeAfter = createTimeAfter;
     }
 
-    public Date getCreateTimeEnd() {
-        return createTimeEnd;
+    public Date getCreateTimeBefore() {
+        return createTimeBefore;
     }
 
-    public void setCreateTimeEnd(Date createTimeEnd) {
-        this.createTimeEnd = createTimeEnd;
+    public void setCreateTimeBefore(Date createTimeBefore) {
+        this.createTimeBefore = createTimeBefore;
     }
 
-    public String getBizId() {
-        return bizId;
+    public String getBizIdLike() {
+        return bizIdLike;
     }
 
-    public void setBizId(String bizId) {
-        this.bizId = bizId;
+    public void setBizIdLike(String bizIdLike) {
+        this.bizIdLike = bizIdLike;
     }
 
     public int getPage() {

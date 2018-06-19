@@ -4,18 +4,18 @@ package com.tinnkm.application.util.wechat.model;
  * @author tinnkm
  */
 public class AccessToken {
-    private String accessToken;
+    private String token;
     /**
      * 过期时间默认是7200s，单位为s
      */
     private int expiresIn;
 
-    public String getAccessToken() {
-        return accessToken;
+    public String getToken() {
+        return token;
     }
 
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public int getExpiresIn() {

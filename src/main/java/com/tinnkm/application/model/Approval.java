@@ -2,7 +2,6 @@ package com.tinnkm.application.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.util.UUID;
 
 /**
  * 同一bizid与openid只有一条信息

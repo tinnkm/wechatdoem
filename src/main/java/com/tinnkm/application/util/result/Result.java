@@ -21,28 +21,28 @@ public class Result<T> {
     }
     public static Result success(String msg){
         Result instance = getInstance();
-        instance.setCode(ResultCode.Success);
+        instance.setCode(ResultCode.SUCCESS);
         instance.setMessage(msg);
         instance.setData(null);
         return instance;
     }
     public static Result success(){
         Result instance = getInstance();
-        instance.setCode(ResultCode.Success);
+        instance.setCode(ResultCode.SUCCESS);
         instance.setMessage("success");
         instance.setData(null);
         return instance;
     }
     public static <T> Result success(String msg,T data){
         Result instance = getInstance();
-        instance.setCode(ResultCode.Success);
+        instance.setCode(ResultCode.SUCCESS);
         instance.setMessage(msg);
         instance.setData(data);
         return instance;
     }
     public static <T> Result success(T data){
         Result instance = getInstance();
-        instance.setCode(ResultCode.Success);
+        instance.setCode(ResultCode.SUCCESS);
         instance.setMessage("success");
         instance.setData(data);
         return instance;
@@ -50,63 +50,63 @@ public class Result<T> {
 
     public static Result failed(String msg){
         Result instance = getInstance();
-        instance.setCode(ResultCode.Failed);
+        instance.setCode(ResultCode.FAILED);
         instance.setMessage(msg);
         instance.setData(null);
         return instance;
     }
     public static Result failed(){
         Result instance = getInstance();
-        instance.setCode(ResultCode.Failed);
+        instance.setCode(ResultCode.FAILED);
         instance.setMessage("failed");
         instance.setData(null);
         return instance;
     }
     public static <T> Result failed(String msg,T data){
         Result instance = getInstance();
-        instance.setCode(ResultCode.Failed);
+        instance.setCode(ResultCode.FAILED);
         instance.setMessage(msg);
         instance.setData(data);
         return instance;
     }
     public static <T> Result failed(T data){
         Result instance = getInstance();
-        instance.setCode(ResultCode.Failed);
+        instance.setCode(ResultCode.FAILED);
         instance.setMessage("failed");
         instance.setData(data);
         return instance;
     }
     public static Result error(String msg){
         Result instance = getInstance();
-        instance.setCode(ResultCode.Error);
+        instance.setCode(ResultCode.ERROR);
         instance.setMessage(msg);
         instance.setData(null);
         return instance;
     }
     public static Result error(){
         Result instance = getInstance();
-        instance.setCode(ResultCode.Error);
+        instance.setCode(ResultCode.ERROR);
         instance.setMessage("error");
         instance.setData(null);
         return instance;
     }
     public static <T> Result error(String msg,T data){
         Result instance = getInstance();
-        instance.setCode(ResultCode.Error);
+        instance.setCode(ResultCode.ERROR);
         instance.setMessage(msg);
         instance.setData(data);
         return instance;
     }
     public static <T> Result error(T data){
         Result instance = getInstance();
-        instance.setCode(ResultCode.Error);
+        instance.setCode(ResultCode.ERROR);
         instance.setMessage("error");
         instance.setData(data);
         return instance;
     }
     public static Result error(Throwable throwable){
         Result instance = getInstance();
-        instance.setCode(ResultCode.Error);
+        instance.setCode(ResultCode.ERROR);
         instance.setMessage(throwable.getLocalizedMessage());
         instance.setData(null);
         return instance;

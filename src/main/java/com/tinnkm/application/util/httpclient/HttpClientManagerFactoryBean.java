@@ -41,14 +41,6 @@ public class HttpClientManagerFactoryBean implements FactoryBean<CloseableHttpCl
     }
 
 
-//    @Autowired
-//    public HttpClientManagerFactoryBean(ConnectionKeepAliveStrategy connectionKeepAliveStrategy, HttpRequestRetryHandler httpRequestRetryHandler, DefaultProxyRoutePlanner proxyRoutePlanner, PoolingHttpClientConnectionManager poolingHttpClientConnectionManager, RequestConfig config) {
-//        this.connectionKeepAliveStrategy = connectionKeepAliveStrategy;
-//        this.httpRequestRetryHandler = httpRequestRetryHandler;
-//        this.proxyRoutePlanner = proxyRoutePlanner;
-//        this.poolingHttpClientConnectionManager = poolingHttpClientConnectionManager;
-//        this.config = config;
-//    }
 
     /**
      * 销毁上下文的时候销毁httpclient实例

@@ -1,0 +1,1 @@
+mvn sonar:sonar -Dsonar.organization=tinnkm-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=4a7cbcbc1b3643193315f61d6bd04be991afd1bf

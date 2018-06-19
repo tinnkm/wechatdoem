@@ -7,13 +7,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * @author tinnkm
  */
 @NoRepositoryBean
-public interface BaseRepository<T,ID extends Serializable> extends JpaRepository<T,ID> {
+public interface BaseRepository<T,R extends Serializable> extends JpaRepository<T,R> {
     /**
      * 消极更新
      * @param entry 实体

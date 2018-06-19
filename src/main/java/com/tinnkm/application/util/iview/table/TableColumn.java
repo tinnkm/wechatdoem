@@ -58,29 +58,7 @@ public class TableColumn {
         this.children = children;
     }
 
-    public TableColumn(String type, String title, String key, int width, int minWidth, int maxWidth, String align, String className, String fixed, Boolean ellipsis, String render, String renderHeader, Boolean sortable, String sortMethod, String sortType, String[] filters, String filterMethod, Boolean filterMultiple, String[] filteredValue, String filterRemote, List<TableColumn> children) {
-        this.type = type;
-        this.title = title;
-        this.key = key;
-        this.width = width;
-        this.minWidth = minWidth;
-        this.maxWidth = maxWidth;
-        this.align = align;
-        this.className = className;
-        this.fixed = fixed;
-        this.ellipsis = ellipsis;
-        this.render = render;
-        this.renderHeader = renderHeader;
-        this.sortable = sortable;
-        this.sortMethod = sortMethod;
-        this.sortType = sortType;
-        this.filters = filters;
-        this.filterMethod = filterMethod;
-        this.filterMultiple = filterMultiple;
-        this.filteredValue = filteredValue;
-        this.filterRemote = filterRemote;
-        this.children = children;
-    }
+
 
     public String getType() {
         return type;
