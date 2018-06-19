@@ -4,8 +4,8 @@ import com.tinnkm.application.util.jpa.ext.DynamicConditionAbstract;
 import com.tinnkm.application.util.jpa.interfaces.BaseRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
@@ -73,7 +73,7 @@ public class BaseRepositoryImpl<T, R extends Serializable> extends SimpleJpaRepo
     }
 
     @Override
-    public Slice<T> findSelective(DynamicConditionAbstract dynamicCondition,Pageable pageable) {
+    public Page<T> findSelective(DynamicConditionAbstract dynamicCondition, Pageable pageable) {
         //todo : test this mothod
         // 获取所有字段
         Field[] declaredFields = dynamicCondition.getClass().getDeclaredFields();

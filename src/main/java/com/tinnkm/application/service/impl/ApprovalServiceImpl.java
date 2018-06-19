@@ -4,13 +4,17 @@ import com.tinnkm.application.dao.ApprovalDao;
 import com.tinnkm.application.model.Approval;
 import com.tinnkm.application.model.ApprovalParams;
 import com.tinnkm.application.service.ApprovalService;
+import com.tinnkm.application.util.iview.table.Table;
 import com.tinnkm.application.util.result.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 
 /**
@@ -40,8 +44,12 @@ public class ApprovalServiceImpl implements ApprovalService {
     }
 
     @Override
-    public Result getApprovalList(ApprovalParams approvalParams, Pageable pageable) {
-        approvalDao.findSelective(approvalParams,pageable);
-        return null;
+    public Result<Table<List<Approval>>> getApprovalList(ApprovalParams approvalParams, Pageable pageable) {
+        Page<Approval> selective = approvalDao.findSelective(approvalParams, pageable);
+        Table<List<Approval>> approvalTable = new Table<>();
+        approvalTable.setTotal(Math.toIntExact(selective.getTotalElements()));
+        approvalTable.setCurrentPage(selective.getNumber());
+        approvalTable.setData(selective.getContent());
+        return Result.success(approvalTable);
     }
 }

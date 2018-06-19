@@ -1,14 +1,18 @@
 package com.tinnkm.application.controller;
 
 import com.tinnkm.application.model.Approval;
+import com.tinnkm.application.model.ApprovalParams;
 import com.tinnkm.application.service.ApprovalService;
 import com.tinnkm.application.service.AuthService;
+import com.tinnkm.application.util.iview.table.Table;
 import com.tinnkm.application.util.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.List;
 
 /**
  * @author tinnkm
@@ -44,5 +48,15 @@ public class ApplicationController {
     @PostMapping("/updateApproval/{bizId}")
     public Result update(@PathVariable("bizId") String bizId){
         return approvalService.update(bizId);
+    }
+
+    /**
+     * 获取所有审批信息
+     * @param approvalParams 审批参数
+     * @param pageable 分页参数
+     * @return 适配iview的table的结果
+     */
+    public Result<Table<List<Approval>>> getAllApproval(ApprovalParams approvalParams, Pageable pageable){
+        return approvalService.getApprovalList(approvalParams,pageable);
     }
 }

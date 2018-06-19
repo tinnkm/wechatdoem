@@ -1,8 +1,12 @@
 package com.tinnkm.application.service;
 
+import com.tinnkm.application.model.Approval;
 import com.tinnkm.application.model.ApprovalParams;
+import com.tinnkm.application.util.iview.table.Table;
 import com.tinnkm.application.util.result.Result;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 /**
  * @author tinnkm
@@ -21,5 +25,5 @@ public interface ApprovalService {
      * @param pageable 分页信息
      * @return table数据
      */
-    Result getApprovalList(ApprovalParams approvalParams,Pageable pageable);
+    Result<Table<List<Approval>>> getApprovalList(ApprovalParams approvalParams, Pageable pageable);
 }

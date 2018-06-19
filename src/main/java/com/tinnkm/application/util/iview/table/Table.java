@@ -1,7 +1,5 @@
 package com.tinnkm.application.util.iview.table;
 
-import java.util.List;
-
 /**
  * @author quantdo_wh02
  * @version 1.0
@@ -23,10 +21,6 @@ public class Table<T> {
      */
     private T data;
 
-    /**
-     * 列头
-     */
-    private List<TableColumn> columns;
     public int getTotal() {
         return total;
     }
@@ -49,13 +43,5 @@ public class Table<T> {
 
     public void setData(T data) {
         this.data = data;
-    }
-
-    public List<TableColumn> getColumns() {
-        return columns;
-    }
-
-    public void setColumns(List<TableColumn> columns) {
-        this.columns = columns;
     }
 }
