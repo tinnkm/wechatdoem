@@ -28,7 +28,7 @@ public class UserController {
      * @return json串
      */
     @PutMapping("/register")
-    public Result<String> register(User user) {
+    public Result<User> register(User user) {
         return Result.success(userService.register(user));
     }
 
@@ -57,7 +57,7 @@ public class UserController {
      * @return json串
      */
     @PostMapping("/changePassword")
-    public Result<String> changePassword(@SessionAttribute("username") String username, String oldPassword, String newPassword){
+    public Result changePassword(@SessionAttribute("username") String username, String oldPassword, String newPassword){
         return userService.updatePassword(username, oldPassword, newPassword);
     }
 
@@ -68,7 +68,7 @@ public class UserController {
      * @return json串
      */
     @GetMapping("/logout")
-    public Result<String> logout(@SessionAttribute String username,HttpSession session){
+    public Result logout(@SessionAttribute String username,HttpSession session){
         try {
             session.removeAttribute(username);
             return Result.success("登出成功");

@@ -7,6 +7,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 
+import java.util.Date;
+
 import static org.junit.Assert.*;
 
 public class ApprovalServiceImplTest extends ApplicationTests {
@@ -15,6 +17,11 @@ public class ApprovalServiceImplTest extends ApplicationTests {
     private ApprovalService approvalService;
     @Test
     public void getApprovalList() {
-        approvalService.getApprovalList(new ApprovalParams(),PageRequest.of(1,10));
+        ApprovalParams approvalParams = new ApprovalParams();
+        approvalParams.setBizIdLike("1");
+        approvalParams.setCreateTimeAfter(new Date());
+        approvalParams.setCreateTimeBefore(new Date());
+        approvalParams.setStatus("1");
+        approvalService.getApprovalList(approvalParams,PageRequest.of(1,10));
     }
 }

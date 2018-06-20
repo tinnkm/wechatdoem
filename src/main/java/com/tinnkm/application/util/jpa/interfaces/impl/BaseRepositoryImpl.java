@@ -1,6 +1,6 @@
 package com.tinnkm.application.util.jpa.interfaces.impl;
 
-import com.tinnkm.application.util.jpa.ext.DynamicConditionAbstract;
+import com.tinnkm.application.util.jpa.ext.DynamicConditionInterface;
 import com.tinnkm.application.util.jpa.interfaces.BaseRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,9 +31,9 @@ public class BaseRepositoryImpl<T, R extends Serializable> extends SimpleJpaRepo
         this.em = em;
     }
 
-    private Serializable getClassId(T entity){
+    private Serializable getClassId(T entity) {
         Field[] declaredFields = entity.getClass().getDeclaredFields();
-        return  (Serializable) Arrays.stream(declaredFields).filter(field -> !Modifier.isStatic(field.getModifiers()) && null != field.getAnnotation(Id.class)).map(field -> {
+        return (Serializable) Arrays.stream(declaredFields).filter(field -> !Modifier.isStatic(field.getModifiers()) && null != field.getAnnotation(Id.class)).map(field -> {
             try {
                 return field.get(entity);
             } catch (IllegalAccessException e) {
@@ -42,12 +42,13 @@ public class BaseRepositoryImpl<T, R extends Serializable> extends SimpleJpaRepo
             return null;
         }).collect(Collectors.toList()).get(0);
     }
+
     @Override
     public int updateSelective(T entity) {
         final Serializable id;
         Field[] declaredFields = entity.getClass().getDeclaredFields();
         // 获取所有字段
-       id = getClassId(entity);
+        id = getClassId(entity);
         if (null != id) {
             Object dbEntity = em.find(entity.getClass(), id);
             Arrays.stream(declaredFields).forEach(field -> {
@@ -73,50 +74,44 @@ public class BaseRepositoryImpl<T, R extends Serializable> extends SimpleJpaRepo
     }
 
     @Override
-    public Page<T> findSelective(DynamicConditionAbstract dynamicCondition, Pageable pageable) {
-        //todo : test this mothod
+    public Page<T> findSelective(DynamicConditionInterface dynamicCondition, Pageable pageable) {
         // 获取所有字段
         Field[] declaredFields = dynamicCondition.getClass().getDeclaredFields();
-        Specification<T> specification = Specification.where((root, query, cb) -> null);
-        Arrays.stream(declaredFields).forEach(filed -> {
+        Specification<T> specification = Specification.where(null);
+        for (Field filed : declaredFields) {
             filed.setAccessible(true);
+            Object value = null;
             try {
-                Object value = filed.get(dynamicCondition);
-                if (null != value) {
-                    specification.and((root, query, cb) -> {
-                        String name = filed.getName();
-                        TypeEnums typeEnums = TypeEnums.fromProperty(name);
-                        // 表示字段是带type信息的需要做处理
-                        // 获取实际字段值
-                        String realFiled = typeEnums.extractProperty(name);
-                        switch (typeEnums) {
-                            case LIKE:
-                                cb.like(root.get(realFiled), value + "%");
-                                break;
-                            case AFTER:
-                                cb.greaterThan(root.get(realFiled).type().as(Date.class), (Date) value);
-                                break;
-                            case BEFORE:
-                                cb.lessThan(root.get(realFiled).type().as(Date.class), (Date) value);
-                                break;
-                            case NOT_LIKE:
-                                cb.notLike(root.get(realFiled), value.toString());
-                                break;
-                            case SIMPLE_PROPERTY:
-                                cb.equal(root.get(realFiled), value);
-                                break;
-                            default:
-                                break;
-                        }
-                        return null;
-                    });
-                }
+                value = filed.get(dynamicCondition);
             } catch (IllegalAccessException e) {
                 logger.error("can't get the filed value");
             }
-
-        });
-        return super.findAll(specification,pageable);
+            if (null != value) {
+                final Object finalValue = value;
+                specification = specification.and((root, query, cb) -> {
+                    String name = filed.getName();
+                    TypeEnums typeEnums = TypeEnums.fromProperty(name);
+                    // 表示字段是带type信息的需要做处理
+                    // 获取实际字段值
+                    String realFiled = typeEnums.extractProperty(name);
+                    switch (typeEnums) {
+                        case LIKE:
+                            return cb.like(root.get(realFiled), finalValue + "%");
+                        case AFTER:
+                            return cb.greaterThan(root.get(realFiled), (Date) finalValue);
+                        case BEFORE:
+                            return cb.lessThan(root.get(realFiled), (Date) finalValue);
+                        case NOT_LIKE:
+                            return cb.notLike(root.get(realFiled), finalValue.toString());
+                        case SIMPLE_PROPERTY:
+                            return cb.equal(root.get(realFiled), finalValue);
+                        default:
+                            return null;
+                    }
+                });
+            }
+        }
+        return super.findAll(specification, pageable);
     }
 
     /**
@@ -137,12 +132,12 @@ public class BaseRepositoryImpl<T, R extends Serializable> extends SimpleJpaRepo
         private final List<String> keywords;
         private final int numberOfArguments;
 
-         TypeEnums(int numberOfArguments, String... keywords) {
+        TypeEnums(int numberOfArguments, String... keywords) {
             this.numberOfArguments = numberOfArguments;
             this.keywords = Arrays.asList(keywords);
         }
 
-         TypeEnums(String... keywords) {
+        TypeEnums(String... keywords) {
             this(1, keywords);
         }
 

@@ -1,6 +1,6 @@
 package com.tinnkm.application.model;
 
-import com.tinnkm.application.util.jpa.ext.DynamicConditionAbstract;
+import com.tinnkm.application.util.jpa.ext.DynamicConditionInterface;
 
 import java.util.Date;
 
@@ -11,7 +11,7 @@ import java.util.Date;
  * @description 申请查询参数
  * @date 2018/6/12 20:01
  **/
-public class ApprovalParams extends DynamicConditionAbstract {
+public class ApprovalParams implements DynamicConditionInterface {
     /**
      * 审核状态
      */
@@ -28,14 +28,7 @@ public class ApprovalParams extends DynamicConditionAbstract {
      * 业务id
      */
     private String bizIdLike;
-    /**
-     * 页面
-     */
-    private int page;
-    /**
-     * 行数
-     */
-    private int row;
+
 
     public String getStatus() {
         return status;
@@ -69,19 +62,4 @@ public class ApprovalParams extends DynamicConditionAbstract {
         this.bizIdLike = bizIdLike;
     }
 
-    public int getPage() {
-        return page;
-    }
-
-    public void setPage(int page) {
-        this.page = page;
-    }
-
-    public int getRow() {
-        return row;
-    }
-
-    public void setRow(int row) {
-        this.row = row;
-    }
 }

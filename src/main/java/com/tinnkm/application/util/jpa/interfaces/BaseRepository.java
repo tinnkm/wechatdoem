@@ -1,6 +1,6 @@
 package com.tinnkm.application.util.jpa.interfaces;
 
-import com.tinnkm.application.util.jpa.ext.DynamicConditionAbstract;
+import com.tinnkm.application.util.jpa.ext.DynamicConditionInterface;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -25,5 +25,5 @@ public interface BaseRepository<T,R extends Serializable> extends JpaRepository<
      * @param dynamicCondition 动态查询条件
      * @return 查询的分页结果
      */
-    Page<T> findSelective(DynamicConditionAbstract dynamicCondition, Pageable pageable);
+    Page<T> findSelective(DynamicConditionInterface dynamicCondition, Pageable pageable);
 }

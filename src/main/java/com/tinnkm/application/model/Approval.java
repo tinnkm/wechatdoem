@@ -2,6 +2,7 @@ package com.tinnkm.application.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.util.Date;
 
 /**
  * 同一bizid与openid只有一条信息
@@ -34,6 +35,15 @@ public class Approval {
      * 如果信息审核不通过，用户重新申请时，讲失败信息标记删除
      */
     private int deleted;
+
+    /**
+     * 创建时间
+     */
+    private Date createTime;
+    /**
+     * 修改时间
+     */
+    private Date modifyTime;
     //region getter/setter
 
     public String getBizId() {
@@ -85,5 +95,22 @@ public class Approval {
     public void setDeleted(int deleted) {
         this.deleted = deleted;
     }
-    //endregion
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getModifyTime() {
+        return modifyTime;
+    }
+
+    public void setModifyTime(Date modifyTime) {
+        this.modifyTime = modifyTime;
+    }
+
+//endregion
 }

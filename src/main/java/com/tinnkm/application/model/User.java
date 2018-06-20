@@ -20,6 +20,10 @@ public class User {
      */
     private int fromWhere;
 
+    /**
+     * 权限逗号分隔
+     */
+    private String roles;
     //region getter/setter
 
 
@@ -70,5 +74,13 @@ public class User {
     public void setFromWhere(int fromWhere) {
         this.fromWhere = fromWhere;
     }
-    //endregion
+
+    public String getRoles() {
+        return roles;
+    }
+
+    public void setRoles(String roles) {
+        this.roles = roles;
+    }
+//endregion
 }
